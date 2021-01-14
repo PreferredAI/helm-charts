@@ -126,9 +126,3 @@ We store the certificate and private key in a Kubernetes secret:
 Now the secret can be used in the solr installation:
 
 `helm install  . --set tls.enabled=true,tls.certSecret.name=solr-certificate,tls.importKubernetesCA=true`
-
-## Minikube Notes
-
-- Chart out of the box start with 2G,2G...So..
-- minikube start --vm-driver=hyperkit --memory 4096
-- minikube start --vm-driver=virtualbox --memory 4096
