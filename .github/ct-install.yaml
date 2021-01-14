@@ -1,0 +1,4 @@
+chart-dirs:
+  - charts
+check-version-increment: true
+debug: true

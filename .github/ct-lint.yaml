@@ -1,0 +1,7 @@
+chart-dirs:
+  - charts
+check-version-increment: true
+debug: true
+validate-chart-schema: true
+validate-maintainers: true
+validate-yaml: true
