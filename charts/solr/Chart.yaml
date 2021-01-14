@@ -2,8 +2,8 @@
 
 apiVersion: "v1"
 name: "solr"
-version: "1.4.0"
-appVersion: "8.4.0"
+version: 1.5.5
+appVersion: 8.4.0
 description: "A helm chart to install Apache Solr: http://lucene.apache.org/solr/"
 keywords:
   - "solr"
@@ -11,5 +11,5 @@ home: "http://lucene.apache.org/solr/"
 sources:
   - "https://gitbox.apache.org/repos/asf?p=lucene-solr.git"
 maintainers:
-  - name: "ian-thebridge-lucidworks"
-    email: "ian.thebridge@lucidworks.com"
+  - email: lwj5@hotmail.com
+    name: lwj5

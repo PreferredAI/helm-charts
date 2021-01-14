@@ -1,9 +1,18 @@
+# ⚠️ Repo Archive Notice
+
+As of Nov 13, 2020, charts in this repo will no longer be updated.
+For more information, see the Helm Charts [Deprecation and Archive Notice](https://github.com/helm/charts#%EF%B8%8F-deprecation-and-archive-notice), and [Update](https://helm.sh/blog/charts-repo-deprecation/).
+
 # Solr Helm Chart
 
 This helm chart installs a Solr cluster and its required Zookeeper cluster into a running
 kubernetes cluster.
 
 The chart installs the Solr docker image from: https://hub.docker.com/_/solr/
+
+## DEPRECATION NOTICE
+
+This chart is deprecated and no longer supported.
 
 ## Dependencies
 
@@ -31,6 +40,7 @@ The following table shows the configuration options for the Solr helm chart:
 | `javaMem`                                     | JVM memory settings to pass to Solr | `-Xms2g -Xmx3g`                                                       |
 | `resources`                                   | Resource limits and requests to set on the solr pods | `{}` |
 | `extraEnvVars`                                | Additional environment variables to set on the solr pods (in yaml syntax) | `[]` |
+| `initScript`                                | The file name of the custom script to be run before starting Solr | `""` |
 | `terminationGracePeriodSeconds`               | The termination grace period of the Solr pods | `180`|
 | `image.repository`                            | The repository to pull the docker image from| `solr`                                                                |
 | `image.tag`                                   | The tag on the repository to pull | `7.7.2`                                                               |
@@ -42,6 +52,7 @@ The following table shows the configuration options for the Solr helm chart:
 | `readinessProbe.periodSeconds`                | Poll rate for readiness probe | `5`                                                                   |
 | `podAnnotations`                              | Annotations to be applied to the solr pods | `{}` |
 | `affinity`                                    | Affinity policy to be applied to the Solr pods | `{}` |
+| `tolerations`                                 | Tolerations to be applied to the Solr pods | `[]` |
 | `updateStrategy`                              | The update strategy of the solr pods | `{}` |
 | `logLevel`                                    | The log level of the solr pods  | `INFO` |
 | `podDisruptionBudget`                         | The pod disruption budget for the Solr statefulset | `{"maxUnavailable": 1}`                                                                   |

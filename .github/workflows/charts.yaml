@@ -3,7 +3,7 @@ name: Lint and Test Charts
 on: pull_request
 
 jobs:
-  lint-charts:
+  lint-chart:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -17,19 +17,19 @@ jobs:
         with:
           config: .github/ct-lint.yaml
           command: lint
-  lint-docs:
-    runs-on: ubuntu-latest
-    needs: lint-charts
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v1
-      - name: Run helm-docs
-        run: .github/helm-docs.sh
+  # lint-docs:
+  #   runs-on: ubuntu-latest
+  #   needs: lint-chart
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v1
+  #     - name: Run helm-docs
+  #       run: .github/helm-docs.sh
   kubeval-chart:
     runs-on: ubuntu-latest
     needs:
       - lint-chart
-      - lint-docs
+      # - lint-docs
     strategy:
       matrix:
         k8s:
@@ -48,7 +48,7 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - lint-chart
-      - lint-docs
+      # - lint-docs
       - kubeval-chart
     strategy:
       matrix:
