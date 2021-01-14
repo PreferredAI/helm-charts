@@ -1,5 +1,5 @@
 ---
 dependencies:
   - name: zookeeper
-    version: 2.2.4
+    version: 5.23.0
     repository: https://charts.bitnami.com/bitnami
