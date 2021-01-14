@@ -8,7 +8,7 @@ The chart installs the Solr docker image from: https://hub.docker.com/_/solr/
 ## Dependencies
 
 - The zookeeper incubator helm chart
-- Tested on kubernetes 1.10+
+- Tested on kubernetes 1.15+
 
 ## Installation
 
