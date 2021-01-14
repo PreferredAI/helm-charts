@@ -1,0 +1,25 @@
+apiVersion: v1
+entries:
+  solr:
+  - apiVersion: v1
+    appVersion: 8.4.0
+    created: "2021-01-14T16:51:06.80842985Z"
+    dependencies:
+    - name: zookeeper
+      repository: https://charts.bitnami.com/bitnami
+      version: 2.2.4
+    description: 'A helm chart to install Apache Solr: http://lucene.apache.org/solr/'
+    digest: 3ddcc77cefc3556fbf69b5b2375618068efa7f992645099a4582936f8a5bd71c
+    home: http://lucene.apache.org/solr/
+    keywords:
+    - solr
+    maintainers:
+    - email: lwj5@hotmail.com
+      name: lwj5
+    name: solr
+    sources:
+    - https://gitbox.apache.org/repos/asf?p=lucene-solr.git
+    urls:
+    - https://github.com/lwj5/charts/releases/download/solr-1.5.5/solr-1.5.5.tgz
+    version: 1.5.5
+generated: "2021-01-14T16:51:06.579812421Z"
