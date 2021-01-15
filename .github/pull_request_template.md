@@ -1,12 +1,3 @@
----
-name: Pull Request
-about: Create a PR to help us improve
-title: "[chartname] Brief PR name"
-labels: ''
-assignees: ''
-
----
-
 **Description of the change**
 A brief description of the change
 
