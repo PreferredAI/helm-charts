@@ -131,3 +131,6 @@ exporter:
   service:
     type: "ClusterIP"
     annotations: {}
+
+zookeeper:
+  replicaCount: 3
