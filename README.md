@@ -5,5 +5,5 @@ A Helm Chart Repository
 To install this chart repository
 
 ```
-helm repo add preferredai https://charts.preferred.ai
+helm repo add preferred-ai https://charts.preferred.ai
 ```
