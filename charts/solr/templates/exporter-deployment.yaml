@@ -6,7 +6,7 @@ kind: "Service"
 metadata:
   name: "{{ include "solr.exporter-name" . }}"
   labels:
-{{ include "solr.common.labels" . | indent 4 }}
+    {{- include "common.labels.standard" $ | nindent 4 }}
     app.kubernetes.io/component: "exporter"
   annotations:
 {{ toYaml .Values.exporter.service.annotations | indent 4}}
@@ -28,7 +28,7 @@ kind: Deployment
 metadata:
   name: {{ include "solr.exporter-name" . }}
   labels:
-{{ include "solr.common.labels" . | indent 4 }}
+    {{- include "common.labels.standard" $ | nindent 4 }}
     app.kubernetes.io/component: "exporter"
 spec:
   selector:
@@ -42,7 +42,7 @@ spec:
   template:
     metadata:
       labels:
-{{ include "solr.common.labels" . | indent 8 }}
+{{- include "common.labels.standard" $ | nindent 8 }}
         app.kubernetes.io/component: "exporter"
       annotations:
 {{ toYaml .Values.exporter.podAnnotations | indent 8 }}

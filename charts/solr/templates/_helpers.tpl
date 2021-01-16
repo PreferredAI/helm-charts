@@ -19,7 +19,7 @@ If release name contains chart name it will be used as a full name.
 {{- if contains $name .Release.Name -}}
 {{- .Release.Name | trunc 63 | trimSuffix "-" -}}
 {{- else -}}
-{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
+{{ include "common.names.fullname" . }}
 {{- end -}}
 {{- end -}}
 {{- end -}}
@@ -88,13 +88,10 @@ Create chart name and version as used by the chart label.
 {{- end -}}
 
 {{/*
-  Define the labels that should be applied to all resources in the chart
+Return the proper Solr image name
 */}}
-{{- define "solr.common.labels" -}}
-app.kubernetes.io/name: {{ include "solr.name" . }}
-app.kubernetes.io/instance: {{ .Release.Name }}
-app.kubernetes.io/managed-by: {{ .Release.Service }}
-helm.sh/chart: {{ include "solr.chart" . }}
+{{- define "solr.image" -}}
+{{ include "common.images.image" (dict "imageRoot" .Values.image "global" .Values.global) }}
 {{- end -}}
 
 {{/*

@@ -1,5 +1,8 @@
 ---
 dependencies:
+  - name: common
+    version: 1.3.4
+    repository: https://charts.bitnami.com/bitnami
   - name: zookeeper
     version: 5.23.0
     repository: https://charts.bitnami.com/bitnami
