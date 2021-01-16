@@ -64,6 +64,7 @@ The following table shows the configuration options for the Solr helm chart:
 | `service.type`                                | The type of service for the solr client service | `ClusterIP` |
 | `service.annotations`                         | Annotations to apply to the solr client service | `{}` |
 | `zookeeper.replicaCount`                      | The number of replicas in the Zookeeper statefulset | `3` |
+| `fourlwCommandsWhitelist`                     | Four letter words command whitelist | `srvr, mntr, ruok, conf` |
 | `exporter.enabled`                            | Whether to enable the Solr Prometheus exporter | `false` |
 | `exporter.image.pullSecrets`                  | Specify docker-registry secret names as an array | `[]` (does not add image pull secrets to deployed pods) |
 | `exporter.configFile`                         | The path in the docker image that the exporter loads the config from | `/opt/solr/contrib/prometheus-exporter/conf/solr-exporter-config.xml` |
