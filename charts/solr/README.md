@@ -193,4 +193,4 @@ Now the secret can be used in the solr installation:
 **Known Issues**
 
 - You will need to manually move the Zookeeper data files in the current persistent volume when upgrading from 1.x.x. See https://github.com/PreferredAI/helm-charts/issues/5.
-- There are error messages in the portal > cloud > zk status. This are cosmetic issues and will not affect the usage.
+- There are error messages in the portal > cloud > zk status. This are cosmetic issues and will not affect the usage. See https://issues.apache.org/jira/browse/SOLR-13801.
