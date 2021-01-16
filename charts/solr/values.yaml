@@ -1,26 +1,45 @@
----
 ## Global Docker image parameters
 ## Please, note that this will override the image parameters, including dependencies, configured to use the global value
-## Current available global Docker image parameters: imagePullSecrets
+## Current available global Docker image parameters: imageRegistry, imagePullSecrets and storageClass
 ##
-# global:
+global: {}
+#   imageRegistry: myRegistryName
 #   imagePullSecrets:
 #     - myRegistryKeySecretName
+#   storageClass: myStorageClass
 
-# Which port should solr listen on
+## Docker Official Solr image version
+## ref: https://hub.docker.com/_/solr/
+##
+image:
+  registry: docker.io
+  repository: solr
+  tag: 8.4.0
+  ## Specify a imagePullPolicy
+  ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
+  ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
+  ##
+  pullPolicy: IfNotPresent
+  ## Optionally specify an array of imagePullSecrets.
+  ## Secrets must be manually created in the namespace.
+  ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+  ##
+  pullSecrets:
+
+## String to partially override solr.fullname template (will maintain the release name)
+##
+nameOverride:
+
+## String to fully override solr.fullname template
+##
+fullnameOverride:
+
+## Solr settings
+##
 port: 8983
-
-# Number of solr instances to run
-replicaCount: 3
 
 # Settings for solr java memory
 javaMem: "-Xms2g -Xmx3g"
-
-# Set the limits and requests on solr pod resources
-resources: {}
-
-# Extra environment variables - allows yaml definitions
-extraEnvVars: []
 
 # Specify the initial script file name here to be executed before starting Solr
 # The file is located relative to the solr chart root folder
@@ -30,42 +49,6 @@ initScript: ""
 # This can take a while for shards to elect new leaders
 terminationGracePeriodSeconds: 180
 
-# Solr image settings
-image:
-  repository: solr
-  tag: 8.4.0
-  pullPolicy: IfNotPresent
-  ## Optionally specify an array of imagePullSecrets.
-  ## Secrets must be manually created in the namespace.
-  ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
-  ##
-  # pullSecrets:
-  #   - myRegistryKeySecretName
-
-
-# Solr pod liveness
-livenessProbe:
-  initialDelaySeconds: 45
-  periodSeconds: 10
-
-# Solr pod readiness
-readinessProbe:
-  initialDelaySeconds: 15
-  periodSeconds: 5
-
-# Annotations to apply to the solr pods
-podAnnotations: {}
-
-# Affinity group rules or the solr pods
-affinity: {}
-
-# Tolerations for pod assignment
-tolerations: []
-
-# Update Strategy for solr pods
-updateStrategy:
-  type: "RollingUpdate"
-
 # The log level of the Solr instances
 logLevel: "INFO"
 
@@ -73,17 +56,93 @@ logLevel: "INFO"
 podDisruptionBudget:
   maxUnavailable: 1
 
+## Number of replicas
+##
+replicaCount: 3
+## Configure resource requests and limits
+## ref: http://kubernetes.io/docs/user-guide/compute-resources/
+##
+resources: {}
+## Affinity for pod assignment
+## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
+##
+affinity: {}
+## Tolerations for pod assignment
+## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
+##
+tolerations: []
+## updateStrategy for Solr
+## ref: https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#update-strategies
+##
+updateStrategy:
+  type: RollingUpdate
+## An array to add extra env vars
+## For example:
+## extraEnvVars:
+##  - name: KIBANA_ELASTICSEARCH_URL
+##    value: test
+##
+extraEnvVars:
+## Additional pod annotations
+## ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
+##
+podAnnotations: {}
 ## Use an alternate scheduler, e.g. "stork".
 ## ref: https://kubernetes.io/docs/tasks/administer-cluster/configure-multiple-schedulers/
 ##
 # schedulerName:
-
-# Configuration for the solr PVC
+## Enable persistence using Persistent Volume Claims
+## ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
+##
 volumeClaimTemplates:
+  ## solr data Persistent Volume Storage Class
   storageClassName: ""
-  storageSize: "20Gi"
   accessModes:
     - "ReadWriteOnce"
+  ## PersistentVolumeClaim size
+  ##
+  storageSize: 20Gi
+
+## Pod Security Context
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+##
+securityContext:
+  enabled: true
+  fsGroup: 8983
+  runAsUser: 8983
+  runAsNonRoot: true
+
+## Kubernetes service type
+## ref: https://kubernetes.io/docs/concepts/services-networking/service/
+##
+service:
+  ## Additional service annotations (evaluate as a template)
+  ## ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
+  ##
+  annotations: {}
+  ## Service type
+  ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
+  ##
+  type: ClusterIP
+
+## Configure extra options for liveness and readiness probes
+## This applies to all the Solr in the sharded cluster
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/#configure-probes)
+##
+livenessProbe:
+  enabled: true
+  initialDelaySeconds: 45
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 6
+  successThreshold: 1
+readinessProbe:
+  enabled: true
+  initialDelaySeconds: 15
+  periodSeconds: 5
+  timeoutSeconds: 5
+  failureThreshold: 6
+  successThreshold: 1
 
 # Configuration for solr TLS handling, see README.md for more instructions
 tls:
@@ -100,11 +159,6 @@ tls:
     name: ""
     keyPath: "tls.key"
     certPath: "tls.crt"
-
-# Configuration for the solr service
-service:
-  type: ClusterIP
-  annotations: {}
 
 # Configuration for the solr prometheus exporter
 exporter:

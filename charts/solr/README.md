@@ -1,4 +1,4 @@
-# Solr Helm Chart
+# Solr
 
 This helm chart installs a Solr cluster and its required Zookeeper cluster into a running
 kubernetes cluster.
@@ -7,24 +7,65 @@ The chart installs the Solr docker image from: https://hub.docker.com/_/solr/
 
 ## Dependencies
 
-- The Bitnami zookeeper [helm chart](https://github.com/bitnami/charts/tree/master/bitnami/zookeeper)
+- The Bitnami [common](https://github.com/bitnami/charts/tree/master/bitnami/common) helm chart
+- The Bitnami [zookeeper](https://github.com/bitnami/charts/tree/master/bitnami/zookeeper) helm chart
 - Tested on kubernetes 1.15+
 
-## Installation
+## Installing the Chart
 
-To install the Solr helm chart run:
+To install the chart with the release name `my-release`:
 
 ```bash
-helm install --name solr preferred-ai/solr
+helm install my-release preferred-ai/solr
 ```
 
-## Configuration Options
+The command deploys Solr on the Kubernetes cluster in the default configuration. The [Parameters](#parameters) section lists the parameters that can be configured during installation.
+
+> **Tip**: List all releases using `helm list`
+
+## Uninstalling the Chart
+
+To uninstall/delete the `my-release` deployment:
+
+```bash
+helm delete my-release
+```
+
+The command removes all the Kubernetes components associated with the chart and deletes the release.
+
+## Parameters
+
+The following table lists the configurable parameters of the Solr chart and their default values.
+
+### Global Configuration
 
 The following table shows the configuration options for the Solr helm chart:
 
 | Parameter                                     | Description                           | Default Value  |
 | --------------------------------------------- | ------------------------------------- | -------------- |
 | `global.imagePullSecrets`                     | Global Docker registry secret names as an array | `[]` (does not add image pull secrets to deployed pods) |
+| `image.registry`                              | Solr image registry | `docker.io` |
+| `image.repository`                            | The repository to pull the docker image from| `solr` |
+| `image.tag`                                   | The tag on the repository to pull | `8.4.0` |
+| `image.pullPolicy`                            | Solr pod pullPolicy | `IfNotPresent` |
+| `image.pullSecrets`                           | Specify docker-registry secret names as an array | `[]` (does not add image pull secrets to deployed pods) |
+| `service.type`                                | The type of service for the solr client service | `ClusterIP` |
+| `service.annotations`                         | Annotations to apply to the solr client service | `{}` |
+| `livenessProbe.initialDelaySeconds`           | Initial Delay for Solr pod liveness probe | `20` |
+| `livenessProbe.periodSeconds`                 | Poll rate for liveness probe | `10` |
+| `livenessProbe.timeoutSeconds`                | When the probe times out | `5`                                                      |
+| `livenessProbe.successThreshold`              | Minimum consecutive successes for the probe to be considered successful after having failed. | `1` |
+| `livenessProbe.failureThreshold`              | Minimum consecutive failures for the probe to be considered failed after having succeeded. | `6` |
+| `readinessProbe.initialDelaySeconds`          | Initial Delay for Solr pod readiness probe | `15` |
+| `readinessProbe.periodSeconds`                | Poll rate for readiness probe | `5` |
+| `readinessProbe.timeoutSeconds`               | When the probe times out | `5`  |
+| `readinessProbe.failureThreshold`             | Minimum consecutive failures for the probe to be considered failed after having succeeded. | `6` |
+| `readinessProbe.successThreshold`             | Minimum consecutive successes for the probe to be considered successful after having failed. | `1` |
+
+### Solr Configuration
+
+| Parameter                                     | Description                           | Default Value  |
+| --------------------------------------------- | ------------------------------------- | -------------- |
 | `port`                                        | The port that Solr will listen on | `8983` |
 | `replicaCount`                                | The number of replicas in the Solr statefulset | `3` |
 | `javaMem`                                     | JVM memory settings to pass to Solr | `-Xms2g -Xmx3g` |
@@ -32,14 +73,6 @@ The following table shows the configuration options for the Solr helm chart:
 | `extraEnvVars`                                | Additional environment variables to set on the solr pods (in yaml syntax) | `[]` |
 | `initScript`                                  | The file name of the custom script to be run before starting Solr | `""` |
 | `terminationGracePeriodSeconds`               | The termination grace period of the Solr pods | `180`|
-| `image.repository`                            | The repository to pull the docker image from| `solr` |
-| `image.tag`                                   | The tag on the repository to pull | `8.4.0` |
-| `image.pullPolicy`                            | Solr pod pullPolicy | `IfNotPresent` |
-| `image.pullSecrets`                           | Specify docker-registry secret names as an array | `[]` (does not add image pull secrets to deployed pods) |
-| `livenessProbe.initialDelaySeconds`           | Initial Delay for Solr pod liveness probe | `20` |
-| `livenessProbe.periodSeconds`                 | Poll rate for liveness probe | `10` |
-| `readinessProbe.initialDelaySeconds`          | Initial Delay for Solr pod readiness probe | `15` |
-| `readinessProbe.periodSeconds`                | Poll rate for readiness probe | `5` |
 | `podAnnotations`                              | Annotations to be applied to the solr pods | `{}` |
 | `affinity`                                    | Affinity policy to be applied to the Solr pods | `{}` |
 | `tolerations`                                 | Tolerations to be applied to the Solr pods | `[]` |
@@ -61,10 +94,11 @@ The following table shows the configuration options for the Solr helm chart:
 | `tls.certSecret.name`                         | The name of the Kubernetes secret that contains the TLS certificate and private key | `""` |
 | `tls.certSecret.keyPath`                      | The key in the Kubernetes secret that contains the private key | `tls.key` |
 | `tls.certSecret.certPath`                     | The key in the Kubernetes secret that contains the TLS certificate | `tls.crt` |
-| `service.type`                                | The type of service for the solr client service | `ClusterIP` |
-| `service.annotations`                         | Annotations to apply to the solr client service | `{}` |
-| `zookeeper.replicaCount`                      | The number of replicas in the Zookeeper statefulset | `3` |
-| `fourlwCommandsWhitelist`                     | Four letter words command whitelist | `srvr, mntr, ruok, conf` |
+
+### Exporter Configuration
+
+| Parameter                                     | Description                           | Default Value  |
+| --------------------------------------------- | ------------------------------------- | -------------- |
 | `exporter.enabled`                            | Whether to enable the Solr Prometheus exporter | `false` |
 | `exporter.image.pullSecrets`                  | Specify docker-registry secret names as an array | `[]` (does not add image pull secrets to deployed pods) |
 | `exporter.configFile`                         | The path in the docker image that the exporter loads the config from | `/opt/solr/contrib/prometheus-exporter/conf/solr-exporter-config.xml` |
@@ -80,11 +114,31 @@ The following table shows the configuration options for the Solr helm chart:
 | `exporter.service.type`                       | The type of the exporter service | `ClusterIP` |
 | `exporter.service.annotations`                | Annotations to apply to the exporter service | `{}` |
 
+### Dependencies Configuration
+
+Please see [Dependencies](#dependencies)
+
+| Parameter                                     | Description                           | Default Value  |
+| --------------------------------------------- | ------------------------------------- | -------------- |
+| `zookeeper.replicaCount`                      | The number of replicas in the Zookeeper statefulset | `3` |
+| `zookeeper.fourlwCommandsWhitelist`           | Four letter words command whitelist | `srvr, mntr, ruok, conf` |
+
 ## Service Start with command sets
 
+Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`. For example,
+
 ```bash
-helm install --name solr \
-    --set image.tag=7.7.2,javaMem="-Xms1g -Xmx1g",logLevel=INFO,replicaCount=3,livenessProbe.initialDelaySeconds=420,exporter.readinessProbe.periodSeconds=30 preferred-ai/solr
+helm install my-release \
+--set replicaCount=4,livenessProbe.initialDelaySeconds=90 \
+  preferred-ai/solr
+```
+
+The above command sets the number of replica to 4, and the liveness probe delay to 90 seconds.
+
+Alternatively, a YAML file that specifies the values for the parameters can be provided while installing the chart. For example,
+
+```bash
+helm install my-release -f values.yaml preferred-ai/solr
 ```
 
 ## TLS Configuration
@@ -127,3 +181,17 @@ We store the certificate and private key in a Kubernetes secret:
 Now the secret can be used in the solr installation:
 
 `helm install  . --set tls.enabled=true,tls.certSecret.name=solr-certificate,tls.importKubernetesCA=true`
+
+## Upgrading
+
+### To 2.0.0
+
+**What changes were introduced in this major version?**
+
+- Previous versions of this Helm Chart was released in Helm Stable repository. The repository is now deprecated and thus this chart is migrated here.
+- This chart uses Bitnami Zookeeper chart as a dependecy instead of Incubator Zookeeper.
+
+**Known Issues**
+
+- You will need to manually move the Zookeeper data files in the current persistent volume when upgrading from 1.x.x. See https://github.com/PreferredAI/helm-charts/issues/5.
+- There are error messages in the portal > cloud > zk status. This are cosmetic issues and will not affect the usage. See https://issues.apache.org/jira/browse/SOLR-13801.
