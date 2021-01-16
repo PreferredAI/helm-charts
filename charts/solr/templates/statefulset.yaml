@@ -12,21 +12,21 @@ spec:
       app.kubernetes.io/component: server
   serviceName: {{ include "solr.headless-service-name" . }}
   replicas: {{ .Values.replicaCount }}
-  updateStrategy:
-    {{ toYaml .Values.updateStrategy | indent 4}}
+  updateStrategy: 
+    {{- toYaml .Values.updateStrategy | nindent 4}}
   template:
     metadata:
       labels:
         {{- include "common.labels.standard" $ | nindent 8 }}
         app.kubernetes.io/component: "server"
       annotations:
-        {{ toYaml .Values.podAnnotations | indent 8 }}
+        {{- toYaml .Values.podAnnotations | indent 8 }}
     spec:
       {{- if .Values.schedulerName }}
       schedulerName: "{{ .Values.schedulerName }}"
       {{- end }}
       affinity:
-        {{ tpl (toYaml .Values.affinity) . | indent 8 }}
+        {{- tpl (toYaml .Values.affinity) . | indent 8 }}
       {{- if $.Values.securityContext.enabled }}
       tolerations:
         {{- include "common.tplvalues.render" (dict "value" $.Values.tolerations "context" $) | nindent 8 }}
@@ -39,8 +39,8 @@ spec:
       initContainers:
         - name: check-zk
           image: busybox:stable-glibc
-          resources:
-            {{ toYaml .Values.resources | indent 12 }}
+          resources: 
+            {{- toYaml .Values.resources | nindent 12 }}
           command:
             - 'sh'
             - '-c'
@@ -69,7 +69,7 @@ spec:
         - name: "cp-solr-xml"
           image: busybox:stable-glibc
           resources:
-            {{ toYaml .Values.resources | indent 12 }}
+            {{- toYaml .Values.resources | nindent 12 }}
           command: ['sh', '-c', 'cp /tmp/solr.xml /tmp-config/solr.xml']
           volumeMounts:
             - name: "solr-xml"
@@ -91,20 +91,20 @@ spec:
               PASSWORD={{ .Values.tls.keystorePassword }}
               openssl "pkcs12" -export -inkey "/tmp/tls_secret/{{.Values.tls.certSecret.keyPath }}" -in "/tmp/tls_secret/{{.Values.tls.certSecret.certPath }}" -out "${PKCS12_OUTPUT}" -password "pass:${PASSWORD}"
               keytool -importkeystore -noprompt -srckeystore "${PKCS12_OUTPUT}" -srcstoretype "pkcs12" -destkeystore "${DEST_KEYSTORE}" -storepass "${PASSWORD}" -srcstorepass "${PASSWORD}"
-            {{ if .Values.tls.importKubernetesCA }}
+            {{- if .Values.tls.importKubernetesCA }}
               csplit -z -f crt- /var/run/secrets/kubernetes.io/serviceaccount/ca.crt '/-----BEGIN CERTIFICATE-----/' '{*}'
               for file in crt-*; do
                 keytool -import -noprompt -keystore "${TRUST_KEYSTORE}" -file "${file}" -storepass "${PASSWORD}" -alias service-$file;
               done
               rm crt-*
-            {{ end }}
-            {{ if not (eq .Values.tls.caSecret.name "") }}
+            {{- end }}
+            {{- if not (eq .Values.tls.caSecret.name "") }}
               csplit -z -f crt- /tmp/tls_ca/{{ .Values.tls.caSecret.bundlePath }} '/-----BEGIN CERTIFICATE-----/' '{*}'
               for file in crt-*; do
                 keytool -import -noprompt -keystore "${TRUST_KEYSTORE}" -file "${file}" -storepass "${PASSWORD}" -alias service-$file;
               done
               rm crt-*
-            {{ end }}
+            {{- end }}
               /opt/solr/server/scripts/cloud-scripts/zkcli.sh -zkhost "{{ include "solr.zookeeper-service-name" . }}:2181" -cmd clusterprop -name urlScheme -val https
           volumeMounts:
             - name: "keystore-volume"
@@ -112,18 +112,18 @@ spec:
             - name: "tls-secret"
               mountPath: "/tmp/tls_secret"
               readOnly: true
-            {{ if not (eq .Values.tls.caSecret.name "") }}
+            {{- if not (eq .Values.tls.caSecret.name "") }}
             - name: "tls-ca"
               mountPath: "/tmp/tls_ca"
               readOnly: true
-            {{ end }}
-        {{ end }}
+            {{- end }}
+        {{- end }}
       containers:
         - name: solr
           image: {{ include "solr.image" $ }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           resources:
-            {{ toYaml .Values.resources | indent 12 }}
+            {{- toYaml .Values.resources | nindent 12 }}
           ports:
             - containerPort: {{ .Values.port }}
               name: solr-client
@@ -145,9 +145,9 @@ spec:
             - name: "SOLR_LOG_LEVEL"
               value: "{{ .Values.logLevel }}"
             {{- if .Values.extraEnvVars }}
-            {{ toYaml .Values.extraEnvVars | indent 12 }}
+              {{- toYaml .Values.extraEnvVars | indent 12 }}
             {{- end }}
-            {{ if .Values.tls.enabled }}
+            {{- if .Values.tls.enabled }}
             - name: "SOLR_SSL_ENABLED"
               value: "true"
             - name: "SOLR_SSL_KEY_STORE"
@@ -164,7 +164,7 @@ spec:
               value: "{{ .Values.tls.needClientAuth }}"
             - name: "SOLR_SSL_CHECK_PEER_NAME"
               value: "{{ .Values.tls.checkPeerName }}"
-            {{ end }}
+            {{- end }}
           livenessProbe:
             initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
@@ -192,10 +192,10 @@ spec:
             - name: solr-init-script
               mountPath: /docker-entrypoint-initdb.d
             {{- end }}
-            {{ if .Values.tls.enabled }}
+            {{- if .Values.tls.enabled }}
             - name: "keystore-volume"
               mountPath: "/etc/ssl/keystores"
-            {{ end }}
+            {{- end }}
       volumes:
         {{- if .Values.tls.enabled }}
         - name: keystore-volume
@@ -230,7 +230,7 @@ spec:
           pv.beta.kubernetes.io/gid: "8983"
       spec:
         accessModes:
-          {{ toYaml .Values.volumeClaimTemplates.accessModes | indent 10 }}
+          {{- toYaml .Values.volumeClaimTemplates.accessModes | nindent 10 }}
         {{- if not ( eq .Values.volumeClaimTemplates.storageClassName  "" ) }}
         storageClassName: "{{ .Values.volumeClaimTemplates.storageClassName }}"
         {{- end }}
