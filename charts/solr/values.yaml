@@ -188,3 +188,4 @@ exporter:
 
 zookeeper:
   replicaCount: 3
+  fourlwCommandsWhitelist: "srvr, mntr, ruok, conf"

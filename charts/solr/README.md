@@ -121,6 +121,7 @@ Please see [Dependencies](#dependencies)
 | Parameter                                     | Description                           | Default Value  |
 | --------------------------------------------- | ------------------------------------- | -------------- |
 | `zookeeper.replicaCount`                      | The number of replicas in the Zookeeper statefulset | `3` |
+| `zookeeper.fourlwCommandsWhitelist`           | Four letter words command whitelist | `srvr, mntr, ruok, conf` |
 
 ## Service Start with command sets
 
