@@ -51,6 +51,20 @@ The following table shows the configuration options for the Solr helm chart:
 | `image.pullSecrets`                           | Specify docker-registry secret names as an array | `[]` (does not add image pull secrets to deployed pods) |
 | `service.type`                                | The type of service for the solr client service | `ClusterIP` |
 | `service.annotations`                         | Annotations to apply to the solr client service | `{}` |
+| `ingress.enabled`                             | Enable ingress controller resource | `false` |
+| `ingress.certManager`                         | Add annotations for cert-manager | `false` |
+| `ingress.hostname`                            | Default host for the ingress resource | `solr.local` |
+| `ingress.path`                                | Default path for the ingress resource | `/` |
+| `ingress.tls`                                 | Create TLS Secret | `false` |
+| `ingress.annotations`                         | Ingress annotations | `[]` (evaluated as a template) |
+| `ingress.extraHosts[0].name`                  | Additional hostnames to be covered | `nil` |
+| `ingress.extraHosts[0].path`                  | Additional hostnames to be covered | `nil` |
+| `ingress.extraPaths`                          | Additional arbitrary path/backend objects | `nil` |
+| `ingress.extraTls[0].hosts[0]`                | TLS configuration for additional hostnames to be covered | `nil` |
+| `ingress.extraTls[0].secretName`              | TLS configuration for additional hostnames to be covered | `nil` |
+| `ingress.secrets[0].name`                     | TLS Secret Name | `nil`                          |
+| `ingress.secrets[0].certificate`              | TLS Secret Certificate | `nil`                          |
+| `ingress.secrets[0].key`                      | TLS Secret Key | `nil`                          |
 | `livenessProbe.initialDelaySeconds`           | Initial Delay for Solr pod liveness probe | `20` |
 | `livenessProbe.periodSeconds`                 | Poll rate for liveness probe | `10` |
 | `livenessProbe.timeoutSeconds`                | When the probe times out | `5`                                                      |
