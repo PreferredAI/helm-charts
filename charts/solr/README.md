@@ -50,6 +50,12 @@ The following table shows the configuration options for the Solr helm chart:
 | `image.pullPolicy`                            | Solr pod pullPolicy | `IfNotPresent` |
 | `image.pullSecrets`                           | Specify docker-registry secret names as an array | `[]` (does not add image pull secrets to deployed pods) |
 | `service.type`                                | The type of service for the solr client service | `ClusterIP` |
+| `service.port`                                | MongoDB service port | `8983` |
+| `service.nodePort`                            | Port to bind to for NodePort and LoadBalancer service types | `""` |
+| `service.clusterIP`                           | MongoDB service cluster IP | `nil` |
+| `service.loadBalancerIP`                      | loadBalancerIP for MongoDB Service | `nil` |
+| `service.loadBalancerSourceRanges`            | Address(es) that are allowed when service is LoadBalancer | `[]` |
+| `service.externalTrafficPolicy`               | Enable client source IP preservation | `Cluster` |
 | `service.annotations`                         | Annotations to apply to the solr client service | `{}` |
 | `ingress.enabled`                             | Enable ingress controller resource | `false` |
 | `ingress.certManager`                         | Add annotations for cert-manager | `false` |
