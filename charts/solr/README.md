@@ -49,11 +49,11 @@ The following table shows the configuration options for the Solr helm chart:
 | `image.tag`                                   | The tag on the repository to pull | `8.7.0` |
 | `image.pullPolicy`                            | Solr pod pullPolicy | `IfNotPresent` |
 | `image.pullSecrets`                           | Specify docker-registry secret names as an array | `[]` (does not add image pull secrets to deployed pods) |
-| `service.type`                                | The type of service for the solr client service | `ClusterIP` |
-| `service.port`                                | MongoDB service port | `8983` |
+| `service.type`                                | The type of service for the Solr client | `ClusterIP` |
+| `service.port`                                | Solr service port | `8983` |
 | `service.nodePort`                            | Port to bind to for NodePort and LoadBalancer service types | `""` |
-| `service.clusterIP`                           | MongoDB service cluster IP | `nil` |
-| `service.loadBalancerIP`                      | loadBalancerIP for MongoDB Service | `nil` |
+| `service.clusterIP`                           | Solr service cluster IP | `nil` |
+| `service.loadBalancerIP`                      | loadBalancerIP for Solr Service | `nil` |
 | `service.loadBalancerSourceRanges`            | Address(es) that are allowed when service is LoadBalancer | `[]` |
 | `service.externalTrafficPolicy`               | Enable client source IP preservation | `Cluster` |
 | `service.annotations`                         | Annotations to apply to the solr client service | `{}` |
