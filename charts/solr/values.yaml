@@ -124,16 +124,39 @@ securityContext:
 
 ## Kubernetes service type
 ## ref: https://kubernetes.io/docs/concepts/services-networking/service/
+## Set this to NodePort, LoadBalancer or ClusterIP
 ##
 service:
-  ## Additional service annotations (evaluate as a template)
-  ## ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
-  ##
-  annotations: {}
   ## Service type
   ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
   ##
   type: ClusterIP
+  ## HTTP Port
+  ##
+  port: 8983
+  ## Specify the nodePort value for the LoadBalancer and NodePort service types.
+  ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#type-nodeport
+  ##
+  nodePort: ""
+  ## Service clusterIP.
+  ##
+  # clusterIP: None
+  ## Specify the loadBalancerIP value for LoadBalancer service types.
+  ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#loadbalancer
+  ##
+  # loadBalancerIP:
+  ## Specify the loadBalancerSourceRanges value for LoadBalancer service types.
+  ## ref: https://kubernetes.io/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/#restrict-access-for-loadbalancer-service
+  ##
+  loadBalancerSourceRanges: []
+  ## Enable client source IP preservation
+  ## ref http://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip
+  ##
+  externalTrafficPolicy: Cluster
+  ## Additional service annotations (evaluate as a template)
+  ## ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
+  ##
+  annotations: {}
 
 ## Configure the ingress resource that allows you to access the panel
 ## ref: http://kubernetes.io/docs/user-guide/ingress/
@@ -262,17 +285,25 @@ exporter:
   ##
   #   pullSecrets:
   #     - myRegistryKeySecretName
-  enabled: false  # Deploy the exporter
-  configFile: "/opt/solr/contrib/prometheus-exporter/conf/solr-exporter-config.xml"  # The config file to point the exporter to
+  # Deploy the exporter
+  enabled: false
+  # The config file to point the exporter to
+  configFile: "/opt/solr/contrib/prometheus-exporter/conf/solr-exporter-config.xml"
   updateStrategy: {}
-  podAnnotations: {}  # Annotations to apply to the exporter pod
-  resources: {}  # Resource limits for the exporter
-  port: 9983  # The port to run the exporter on
-  threads: 7  # The number of threads the exporter uses to query solr
-  livenessProbe:  # Liveness configuration for exporter pod
+  # Annotations to apply to the exporter pod
+  podAnnotations: {}
+  # Resource limits for the exporter
+  resources: {}
+  # The port to run the exporter on
+  port: 9983
+  # The number of threads the exporter uses to query solr
+  threads: 7
+  # Liveness configuration for exporter pod
+  livenessProbe:
     initialDelaySeconds: 20
     periodSeconds: 10
-  readinessProbe:  # Readiness configuration for exporter pod
+  # Readiness configuration for exporter pod
+  readinessProbe:
     initialDelaySeconds: 15
     periodSeconds: 5
   service:
