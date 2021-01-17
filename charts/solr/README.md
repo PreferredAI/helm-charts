@@ -46,7 +46,7 @@ The following table shows the configuration options for the Solr helm chart:
 | `global.imagePullSecrets`                     | Global Docker registry secret names as an array | `[]` (does not add image pull secrets to deployed pods) |
 | `image.registry`                              | Solr image registry | `docker.io` |
 | `image.repository`                            | The repository to pull the docker image from| `solr` |
-| `image.tag`                                   | The tag on the repository to pull | `8.4.0` |
+| `image.tag`                                   | The tag on the repository to pull | `8.7.0` |
 | `image.pullPolicy`                            | Solr pod pullPolicy | `IfNotPresent` |
 | `image.pullSecrets`                           | Specify docker-registry secret names as an array | `[]` (does not add image pull secrets to deployed pods) |
 | `service.type`                                | The type of service for the solr client service | `ClusterIP` |
