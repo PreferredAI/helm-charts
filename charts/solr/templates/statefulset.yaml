@@ -165,6 +165,7 @@ spec:
             - name: "SOLR_SSL_CHECK_PEER_NAME"
               value: "{{ .Values.tls.checkPeerName }}"
             {{- end }}
+          {{- if .Values.livenessProbe.enabled }}
           livenessProbe:
             initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
@@ -175,6 +176,8 @@ spec:
               scheme: "{{ .Values.tls.enabled | ternary "HTTPS" "HTTP" }}"
               path: /solr/admin/info/system
               port: {{ .Values.port }}
+          {{- end }}
+          {{- if .Values.readinessProbe.enabled }}
           readinessProbe:
             initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
@@ -185,6 +188,7 @@ spec:
               scheme: "{{ .Values.tls.enabled | ternary "HTTPS" "HTTP" }}"
               path: /solr/admin/info/system
               port: {{ .Values.port }}
+          {{- end }}
           volumeMounts:
             - name: {{ include "solr.pvc-name" . }}
               mountPath: /opt/solr/server/home
