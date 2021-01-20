@@ -42,7 +42,7 @@ entries:
       repository: https://charts.bitnami.com/bitnami
       version: 5.23.0
     description: 'A helm chart to install Apache Solr: http://lucene.apache.org/solr/'
-    digest: 6477152b2004a631d281c32b6c06b8ecaf4145150fc37d78861e3edcd572ff49
+    digest: 1ec2a5a989dbafd719df040b1e4ec72c637f1efbce82daa09942227cf78aa028
     home: https://github.com/PreferredAI/helm-charts/tree/master/charts/solr
     icon: https://pbs.twimg.com/profile_images/532569454266179584/al3IkKF8_400x400.png
     keywords:
