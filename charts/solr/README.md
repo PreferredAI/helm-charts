@@ -165,6 +165,64 @@ Alternatively, a YAML file that specifies the values for the parameters can be p
 helm install my-release -f values.yaml preferred-ai/solr
 ```
 
+## Authentication
+
+Basic Authentication is one of the a various authentication plugins for Solr. To initiate Solr with Basic Authentication, you will need to place the default [security.json](https://lucene.apache.org/solr/guide/basic-authentication-plugin.html) file into Zookeeper.
+
+To do this, you will first need to either:
+
+- [mount a ConfigMap](https://kubernetes.io/docs/concepts/configuration/configmap/#using-configmaps) with a key `security.json` and the file contents as the value, or
+- mount a volume with `security.json` file inside, or
+- add `security.json` directly to initScripts.
+
+The following example will use a mounted ConfigMap.
+
+1. Create a security-json.yaml (please put the full security.json into the space below).
+
+    ```yaml
+    apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: security-json
+    data:
+      security.json: |
+        {
+        "authentication":{ 
+          ...
+        }}
+    ```
+
+1. Apply the ConfigMap into the namespace
+
+    ```bash
+    kubectl apply -f security-json.yaml
+    ```
+
+1. Use the following helm install arguments. See [Helm install](https://helm.sh/docs/helm/helm_install/) on how to use a yaml file for install arguments.
+
+    ```yaml
+    initScripts:
+      enable-basicauth.sh: |
+        #!/bin/bash
+        solr zk ls / | (! grep -wq security.json) && solr zk cp file:/tmp/security-json/security.json/security.json zk:/security.json
+    extraVolumes: 
+      - name: init-scripts
+        configMap:
+          # You may need to change this depending on your helm install name.
+          # That is name: <name>-init-scripts
+          name: solr-init-scripts
+      - name: security-json
+        configMap:
+          name: security-json
+    extraVolumeMounts:
+      - name: init-scripts
+        mountPath: /docker-entrypoint-initdb.d
+      - name: security-json
+        mountPath: /tmp/security-json
+    ```
+
+Similary, you may use this method to initialize other authentication plugins.
+
 ## TLS Configuration
 
 Solr can be configured to use TLS to encrypt the traffic between solr nodes. To set this up with a certificate signed by the Kubernetes CA:
@@ -212,8 +270,8 @@ Now the secret can be used in the solr installation:
 
 **What changes were introduced in this major version?**
 
-- This chart no longer uses `solr-config-map` configmap. If you use a custom `solr-config-map` please move the configuration into solr.xml on zookeeper before upgrading.
-- Replaced `initScript` with `initScripts` that takes in filename-content values which can be mounted to /docker-entrypoint-initdb.d with extraVolumes and extraVolumeMounts
+- This chart no longer uses `solr-config-map` ConfigMap. If you use a custom `solr-config-map` please move the configuration into solr.xml on zookeeper before upgrading.
+- Replaced `initScript` with `initScripts` that takes in filename-content values which can be mounted to /docker-entrypoint-initdb.d with extraVolumes and extraVolumeMounts. See [Authentication](#authentication) for example.
 
 **Known Issues**
 
