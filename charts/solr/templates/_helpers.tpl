@@ -74,13 +74,6 @@ Create chart name and version as used by the chart label.
 {{- end -}}
 
 {{/*
-  Define the name of the solr.xml configmap
-*/}}
-{{- define "solr.configmap-name" -}}
-{{- printf "%s-%s" (include "solr.fullname" .) "config-map" | trunc 63 | trimSuffix "-" -}}
-{{- end -}}
-
-{{/*
   Define the name of the custom script configmap
 */}}
 {{- define "solr.custom-script.configmap-name" -}}

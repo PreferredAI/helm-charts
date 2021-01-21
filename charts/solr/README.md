@@ -5,6 +5,8 @@ kubernetes cluster.
 
 The chart installs the Solr docker image from: https://hub.docker.com/_/solr/
 
+Please read [Upgrading](#upgrading) section before upgrading MAJOR versions.
+
 ## Dependencies
 
 - The Bitnami [common](https://github.com/bitnami/charts/tree/master/bitnami/common) helm chart
@@ -203,6 +205,16 @@ Now the secret can be used in the solr installation:
 `helm install  . --set tls.enabled=true,tls.certSecret.name=solr-certificate,tls.importKubernetesCA=true`
 
 ## Upgrading
+
+### To 3.0.0
+
+**What changes were introduced in this major version?**
+
+- This chart no longer uses `solr-config-map` configmap. If you use a custom `solr-config-map` please move the configuration into solr.xml on zookeeper before upgrading.
+
+**Known Issues**
+
+- Known issues remain the same as 2.x.x
 
 ### To 2.0.0
 
