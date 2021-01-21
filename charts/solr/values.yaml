@@ -41,9 +41,37 @@ port: 8983
 # Settings for solr java memory
 javaMem: "-Xms2g -Xmx3g"
 
-# Specify the initial script file name here to be executed before starting Solr
-# The file is located relative to the solr chart root folder
-initScript: ""
+## Specify '.sh' scripts the initial scripts here to be executed before starting Solr
+## You must use this with extraVolumeMounts and extraVolumes.
+##
+## initScripts:
+##   enable-basicauth.sh: |
+##     #!/bin/bash
+##     solr zk ls / | (! grep -wq security.json) && solr zk cp file:path_to_local_security.json zk:/security.json
+##   do-something-else.sh: |
+##     #!/bin/bash
+##     echo "Do do-something-else.sh"
+##
+initScripts: {}
+
+## Extra volumes to add to the deployment such as configmaps
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/
+##
+## extraVolumes: 
+##   - name: init-scripts
+##     configMap:
+##       # Provide the name of the ConfigMap containing the files you want
+##       # to add to the container
+##       name: solr-init-scripts
+extraVolumes: []
+
+## Extra volume mounts to add to the container
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/
+##
+## extraVolumeMounts:
+##   - name: init-scripts
+##     mountPath: /docker-entrypoint-initdb.d
+extraVolumeMounts: []
 
 # Sets the termination Grace period for the solr pods
 # This can take a while for shards to elect new leaders

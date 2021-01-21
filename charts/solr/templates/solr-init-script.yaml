@@ -1,4 +1,4 @@
-{{ if not ( eq .Values.initScript  "" ) }}
+{{- if .Values.initScripts }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -6,6 +6,5 @@ metadata:
   labels:
     {{- include "common.labels.standard" $ | nindent 4 }}
 data:
-  solr-init.sh: |
-{{ .Files.Get .Values.initScript | indent 4}}
-{{ end }}
+{{- include "common.tplvalues.render" (dict "value" .Values.initScripts "context" $) | nindent 2 }}
+{{- end }}

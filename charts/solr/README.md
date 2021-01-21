@@ -93,7 +93,9 @@ The following table shows the configuration options for the Solr helm chart:
 | `javaMem`                                     | JVM memory settings to pass to Solr | `-Xms2g -Xmx3g` |
 | `resources`                                   | Resource limits and requests to set on the solr pods | `{}` |
 | `extraEnvVars`                                | Additional environment variables to set on the solr pods (in yaml syntax) | `[]` |
-| `initScript`                                  | The file name of the custom script to be run before starting Solr | `""` |
+| `initScripts`                                 | filename-content pair of values | `{}` |
+| `extraVolumes`                                | Additional volumes | `[]` |
+| `extraVolumeMounts`                           | Additional volume mounts | `[]` |
 | `terminationGracePeriodSeconds`               | The termination grace period of the Solr pods | `180`|
 | `podAnnotations`                              | Annotations to be applied to the solr pods | `{}` |
 | `affinity`                                    | Affinity policy to be applied to the Solr pods | `{}` |
@@ -211,6 +213,7 @@ Now the secret can be used in the solr installation:
 **What changes were introduced in this major version?**
 
 - This chart no longer uses `solr-config-map` configmap. If you use a custom `solr-config-map` please move the configuration into solr.xml on zookeeper before upgrading.
+- Replaced `initScript` with `initScripts` that takes in filename-content values which can be mounted to /docker-entrypoint-initdb.d with extraVolumes and extraVolumeMounts
 
 **Known Issues**
 
