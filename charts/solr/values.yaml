@@ -275,6 +275,7 @@ ingress:
 ##
 livenessProbe:
   enabled: true
+  useSocket: false
   initialDelaySeconds: 45
   periodSeconds: 10
   timeoutSeconds: 5
@@ -282,6 +283,7 @@ livenessProbe:
   successThreshold: 1
 readinessProbe:
   enabled: true
+  useSocket: false
   initialDelaySeconds: 15
   periodSeconds: 5
   timeoutSeconds: 5
