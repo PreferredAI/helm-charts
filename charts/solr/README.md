@@ -68,14 +68,18 @@ The following table shows the configuration options for the Solr helm chart:
 | `ingress.extraPaths`                          | Additional arbitrary path/backend objects | `nil` |
 | `ingress.extraTls[0].hosts[0]`                | TLS configuration for additional hostnames to be covered | `nil` |
 | `ingress.extraTls[0].secretName`              | TLS configuration for additional hostnames to be covered | `nil` |
-| `ingress.secrets[0].name`                     | TLS Secret Name | `nil`                          |
-| `ingress.secrets[0].certificate`              | TLS Secret Certificate | `nil`                          |
-| `ingress.secrets[0].key`                      | TLS Secret Key | `nil`                          |
+| `ingress.secrets[0].name`                     | TLS Secret Name | `nil` |
+| `ingress.secrets[0].certificate`              | TLS Secret Certificate | `nil` |
+| `ingress.secrets[0].key`                      | TLS Secret Key | `nil` |
+| `livenessProbe.enabled`                       | Enable/disable the liveness probe | `true` |
+| `livenessProbe.useSocket`                     | Use socket instead of http for the liveness probe | `false` |
 | `livenessProbe.initialDelaySeconds`           | Initial Delay for Solr pod liveness probe | `20` |
 | `livenessProbe.periodSeconds`                 | Poll rate for liveness probe | `10` |
 | `livenessProbe.timeoutSeconds`                | When the probe times out | `5`                                                      |
 | `livenessProbe.successThreshold`              | Minimum consecutive successes for the probe to be considered successful after having failed. | `1` |
 | `livenessProbe.failureThreshold`              | Minimum consecutive failures for the probe to be considered failed after having succeeded. | `6` |
+| `readinessProbe.enabled`                      | Enable/disable the readiness probe | `true` |
+| `readinessProbe.useSocket`                    | Use socket instead of http for the readiness probe | `false` |
 | `readinessProbe.initialDelaySeconds`          | Initial Delay for Solr pod readiness probe | `15` |
 | `readinessProbe.periodSeconds`                | Poll rate for readiness probe | `5` |
 | `readinessProbe.timeoutSeconds`               | When the probe times out | `5`  |
