@@ -223,6 +223,10 @@ The following example will use a mounted ConfigMap.
         mountPath: /docker-entrypoint-initdb.d
       - name: security-json
         mountPath: /tmp/security-json
+    readinessProbe:
+      useSocket: true
+    livenessProbe:
+      useSocket: true
     ```
 
 Similary, you may use this method to initialize other authentication plugins.
