@@ -57,7 +57,7 @@ initScripts: {}
 ## Extra volumes to add to the deployment such as configmaps
 ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/
 ##
-## extraVolumes: 
+## extraVolumes:
 ##   - name: init-scripts
 ##     configMap:
 ##       # Provide the name of the ConfigMap containing the files you want
