@@ -19,4 +19,3 @@ request, mention that information here.-->
 - [ ] Chart version bumped in `Chart.yaml` according to [semver](http://semver.org/).
 - [ ] Variables are documented in the README.md
 - [ ] Title of the PR starts with chart name (e.g. `[chart-name] Update depedency`)
-- [ ] If the chart contains a `values-production.yaml` apart from `values.yaml`, ensure that you implement the changes in both files
