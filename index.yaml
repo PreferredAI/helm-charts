@@ -3,6 +3,36 @@ entries:
   solr:
   - apiVersion: v2
     appVersion: 8.7.0
+    created: "2021-01-22T03:19:10.048415396Z"
+    dependencies:
+    - name: common
+      repository: https://charts.bitnami.com/bitnami
+      version: 1.3.4
+    - name: zookeeper
+      repository: https://charts.bitnami.com/bitnami
+      version: 5.23.0
+    description: 'A helm chart to install Apache Solr: http://lucene.apache.org/solr/'
+    digest: caa6d305a9ac7a634a23e8190add3235c061e04615bfc08374bcd3ccc99816cc
+    home: https://github.com/PreferredAI/helm-charts/tree/master/charts/solr
+    icon: https://pbs.twimg.com/profile_images/532569454266179584/al3IkKF8_400x400.png
+    keywords:
+    - solr
+    - lucene
+    - web
+    - index
+    maintainers:
+    - email: lwj5@hotmail.com
+      name: lwj5
+    name: solr
+    sources:
+    - https://github.com/apache/lucene-solr
+    - https://github.com/docker-solr/docker-solr
+    - https://github.com/bitnami/charts
+    urls:
+    - https://github.com/PreferredAI/helm-charts/releases/download/solr-3.0.1/solr-3.0.1.tgz
+    version: 3.0.1
+  - apiVersion: v2
+    appVersion: 8.7.0
     created: "2021-01-22T02:41:33.538604495Z"
     dependencies:
     - name: common
