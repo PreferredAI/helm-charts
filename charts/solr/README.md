@@ -1,9 +1,9 @@
 # Solr
 
 This helm chart installs a Solr cluster and its required Zookeeper cluster into a running
-kubernetes cluster.
+Kubernetes cluster.
 
-The chart installs the Solr docker image from: https://hub.docker.com/_/solr/
+The chart installs the [Solr](https://hub.docker.com/_/solr/) docker image.
 
 Please read [Upgrading](#upgrading) section before upgrading MAJOR versions.
 
@@ -11,7 +11,7 @@ Please read [Upgrading](#upgrading) section before upgrading MAJOR versions.
 
 - The Bitnami [common](https://github.com/bitnami/charts/tree/master/bitnami/common) helm chart
 - The Bitnami [zookeeper](https://github.com/bitnami/charts/tree/master/bitnami/zookeeper) helm chart
-- Tested on kubernetes 1.15+
+- Tested on Kubernetes 1.15+
 
 ## Installing the Chart
 
@@ -151,7 +151,7 @@ Please see [Dependencies](#dependencies)
 | `zookeeper.replicaCount`                      | The number of replicas in the Zookeeper statefulset | `3` |
 | `zookeeper.fourlwCommandsWhitelist`           | Four letter words command whitelist | `srvr, mntr, ruok, conf` |
 
-## Service Start with command sets
+## Installing with Arguments
 
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`. For example,
 
@@ -161,9 +161,9 @@ helm install my-release \
   preferred-ai/solr
 ```
 
-The above command sets the number of replica to 4, and the liveness probe delay to 90 seconds.
+The above command sets the number of replicas to 4, and the liveness probe delay to 90 seconds.
 
-Alternatively, a YAML file that specifies the values for the parameters can be provided while installing the chart. For example,
+Alternatively, a YAML file that specifies the values for the parameters can be provided while [installing](https://helm.sh/docs/helm/helm_install/) the chart. For example,
 
 ```bash
 helm install my-release -f values.yaml preferred-ai/solr
@@ -171,7 +171,7 @@ helm install my-release -f values.yaml preferred-ai/solr
 
 ## Authentication
 
-Basic Authentication is one of the a various authentication plugins for Solr. To initiate Solr with Basic Authentication, you will need to place the default [security.json](https://lucene.apache.org/solr/guide/basic-authentication-plugin.html) file into Zookeeper.
+Basic Authentication is one of the various authentication plugins for Solr. To initiate Solr with Basic Authentication, you will need to place the default [security.json](https://lucene.apache.org/solr/guide/basic-authentication-plugin.html) file into Zookeeper.
 
 To do this, you will first need to either:
 
@@ -181,7 +181,7 @@ To do this, you will first need to either:
 
 The following example will use a mounted ConfigMap.
 
-1. Create a security-json.yaml (please put the full security.json into the space below).
+1. Create a security-json.yaml (please put the full security.json into space below).
 
     ```yaml
     apiVersion: v1
@@ -202,13 +202,13 @@ The following example will use a mounted ConfigMap.
     kubectl apply -f security-json.yaml
     ```
 
-1. Use the following helm install arguments. See [Helm install](https://helm.sh/docs/helm/helm_install/) on how to use a yaml file for install arguments.
+1. Use the following helm install arguments. See [Installing with Arguments](#installing-with-arguments) on how to use a YAML file for install arguments.
 
     ```yaml
     initScripts:
       enable-basicauth.sh: |
         #!/bin/bash
-        solr zk ls / | (! grep -wq security.json) && solr zk cp file:/tmp/security-json/security.json/security.json zk:/security.json
+        solr zk ls / | (! grep -wq security.json) && solr zk cp file:/tmp/security-json/security.json zk:/security.json
     extraVolumes: 
       - name: init-scripts
         configMap:
@@ -229,17 +229,17 @@ The following example will use a mounted ConfigMap.
       useSocket: true
     ```
 
-Similary, you may use this method to initialize other authentication plugins.
+Similarly, you may use this method to initialize other authentication plugins.
 
 ## TLS Configuration
 
-Solr can be configured to use TLS to encrypt the traffic between solr nodes. To set this up with a certificate signed by the Kubernetes CA:
+Solr can be configured to use TLS to encrypt the traffic between Solr nodes. To set this up with a certificate signed by the Kubernetes CA:
 
 Generate SSL certificate for the installation:
 
 `cfssl genkey ssl_config.json | cfssljson -bare server`
 
-base64 Encode the CSR and apply into kubernetes as a CertificateSigningRequest
+base64 Encode the CSR and apply into Kubernetes as a CertificateSigningRequest
 
 ```bash
 export MY_CSR_NAME="solr-certifiate"
@@ -289,10 +289,10 @@ Now the secret can be used in the solr installation:
 
 **What changes were introduced in this major version?**
 
-- Previous versions of this Helm Chart was released in Helm Stable repository. The repository is now deprecated and thus this chart is migrated here.
-- This chart uses Bitnami Zookeeper chart as a dependecy instead of Incubator Zookeeper.
+- Previous versions of this Helm Chart were released in Helm Stable repository. The repository is now deprecated and thus this chart is migrated here.
+- This chart uses Bitnami Zookeeper chart as a dependency instead of Incubator Zookeeper.
 
 **Known Issues**
 
-- You will need to manually move the Zookeeper data files in the current persistent volume when upgrading from 1.x.x. See https://github.com/PreferredAI/helm-charts/issues/5.
-- There are error messages in the portal > cloud > zk status. This are cosmetic issues and will not affect the usage. See https://issues.apache.org/jira/browse/SOLR-13801.
+- You will need to manually move the Zookeeper data files in the current persistent volume when upgrading from 1.x.x. See [#5](https://github.com/PreferredAI/helm-charts/issues/5).
+- There are error messages in the portal > cloud > zk status. These are cosmetic issues and will not affect the usage. See [SOLR-13801](https://issues.apache.org/jira/browse/SOLR-13801).
