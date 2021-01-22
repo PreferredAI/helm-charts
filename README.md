@@ -4,7 +4,8 @@ A Helm Chart Repository
 If you like the charts, please help to star our repo!
 
 ### Quick links
-[PreferredAI](https://preferred.ai/)
+[PreferredAI](https://preferred.ai/) |
+[Artifact Hub](https://artifacthub.io/packages/search?page=1&ts_query_web=preferred-ai)
 
 ## Installation
 To install this chart repository
