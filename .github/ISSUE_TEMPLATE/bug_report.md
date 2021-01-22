@@ -2,12 +2,12 @@
 name: Bug report
 about: Create a report to help us improve
 title: "[chartname] Brief issue name"
-labels: ''
+labels: for triage
 assignees: ''
 
 ---
 
-**Affected chart**: 
+**Affected chart**
 The name (and version) of the affected chart.
 
 **Describe the bug**
