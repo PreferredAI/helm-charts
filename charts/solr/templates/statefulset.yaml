@@ -67,18 +67,16 @@ spec:
               echo "Did NOT see a ZK leader after 240 secs!";
               exit 1;
         - name: "cp-solr-xml"
-          image: busybox:stable-glibc
+          image: {{ include "solr.image" $ }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-          command: ['sh', '-c', 'cp /tmp/solr.xml /tmp-config/solr.xml']
+          command: ['sh', '-c', 'cp /var/solr/data/solr.xml /tmp/solr-home/solr.xml']
           volumeMounts:
-            - name: "solr-xml"
-              mountPath: "/tmp"
             - name: "{{ include "solr.pvc-name" . }}"
-              mountPath: "/tmp-config"
+              mountPath: "/tmp/solr-home"
         {{- if .Values.tls.enabled }}
         - name: "setup-keystore-and-properties"
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          image: {{ include "solr.image" $ }}
           imagePullPolicy: "{{ .Values.image.pullPolicy }}"
           command:
             - "sh"
@@ -141,7 +139,7 @@ spec:
             - name: "SOLR_HOST"
               value: "$(POD_HOSTNAME).{{ include "solr.headless-service-name" . }}.{{ .Release.Namespace }}"
             - name: "ZK_HOST"
-              value: "{{ include "solr.zookeeper-service-name" . }}:2181"
+              value: "{{ include "solr.zookeeper-service-name" . }}:2181,{{ include "solr.zookeeper-service-name" . }}:2181"
             - name: "SOLR_LOG_LEVEL"
               value: "{{ .Values.logLevel }}"
             {{- if .Values.extraEnvVars }}
@@ -202,13 +200,12 @@ spec:
           volumeMounts:
             - name: {{ include "solr.pvc-name" . }}
               mountPath: /opt/solr/server/home
-            {{- if not ( eq .Values.initScript  "" ) }}
-            - name: solr-init-script
-              mountPath: /docker-entrypoint-initdb.d
-            {{- end }}
             {{- if .Values.tls.enabled }}
             - name: "keystore-volume"
               mountPath: "/etc/ssl/keystores"
+            {{- end }}
+            {{- if .Values.extraVolumeMounts }}
+            {{- include "common.tplvalues.render" (dict "value" .Values.extraVolumeMounts "context" $) | nindent 12 }}
             {{- end }}
       volumes:
         {{- if .Values.tls.enabled }}
@@ -223,19 +220,8 @@ spec:
             secretName: {{ .Values.tls.caSecret.name }}
         {{- end }}
         {{- end }}
-        - name: solr-xml
-          configMap:
-            name: {{ include "solr.configmap-name" . }}
-            items:
-              - key: solr.xml
-                path: solr.xml
-        {{- if not ( eq .Values.initScript  "" ) }}
-        - name: solr-init-script
-          configMap:
-            name: {{ include "solr.custom-script.configmap-name" . }}
-            items:
-              - key: solr-init.sh
-                path: solr-init.sh
+        {{- if .Values.extraVolumes }}
+        {{- include "common.tplvalues.render" (dict "value" .Values.extraVolumes "context" $) | nindent 8 }}
         {{- end }}
   volumeClaimTemplates:
     - metadata:
