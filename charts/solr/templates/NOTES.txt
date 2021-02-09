@@ -18,7 +18,7 @@ Alternatively, we see that you have enabled ingress.
  WARNING
 
     By setting "ingress.enabled=true" you have most likely exposed Solr
-    externally without any authentication mechanism.
+    externally without any authentication plugins.
 
     For security reasons, we strongly suggest that you enable authentiation
     by reading the README.md.
