@@ -110,7 +110,7 @@ The following table shows the configuration options for the Solr helm chart:
 | `schedulerName`                               | The name of the k8s scheduler (other than default)  | `nil` |
 | `volumeClaimTemplates.storageClassName`       | The name of the storage class for the Solr PVC | `""` |
 | `volumeClaimTemplates.storageSize`            | The size of the PVC | `20Gi` |
-| `volumeClaimTemplates.accessModes`            | The access mode of the PVC| `[ "ReadWriteOnce" ]` |
+| `volumeClaimTemplates.accessModes`            | The access mode of the PVC| `["ReadWriteOnce"]` |
 | `tls.enabled`                                 | Whether to enable TLS, requires `tls.certSecret.name` to be set to a secret containing cert details, see README for details | `false` |
 | `tls.wantClientAuth`                          | Whether Solr wants client authentication | `false` |
 | `tls.needClientAuth`                          | Whether Solr requires client authentication | `false` |
@@ -243,7 +243,7 @@ base64 Encode the CSR and apply into Kubernetes as a CertificateSigningRequest
 
 ```bash
 export MY_CSR_NAME="solr-certifiate"
-cat <<EOF | ikubectl apply -f -
+cat <<EOF | kubectl apply -f -
 apiVersion: certificates.k8s.io/v1beta1
 kind: CertificateSigningRequest
 metadata:
@@ -270,7 +270,7 @@ We store the certificate and private key in a Kubernetes secret:
 
 Now the secret can be used in the solr installation:
 
-`helm install  . --set tls.enabled=true,tls.certSecret.name=solr-certificate,tls.importKubernetesCA=true`
+`helm install . --set tls.enabled=true,tls.certSecret.name=solr-certificate,tls.importKubernetesCA=true`
 
 ## Upgrading
 
