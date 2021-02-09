@@ -1,11 +1,35 @@
-Your Solr cluster has now been installed, and can be accessed in the following ways:
+** Please be patient while the chart is being deployed **
 
-  * Internally, within the kubernetes cluster on:
+Solr can be accessed on the following domain name and port from within your cluster:
 
-{{ template "solr.service-name" . }}.{{ .Release.Namespace }}:{{ .Values.port }}
+    {{ template "solr.service-name" . }}.{{ .Release.Namespace }}:{{ .Values.port }}
 
-  * External to the kubernetes cluster:
+To access Solr externally, we recommend port forwarding to your local machine using:
 
-export POD_NAME=$(kubectl get pods --namespace {{ .Release.Namespace }} -l "app={{ template "solr.name" . }},component=server,release={{ .Release.Name }}" -o jsonpath="{ .items[0].metadata.name }")
-echo "Visit http://127.0.0.1:{{ .Values.port }} to access Solr"
-kubectl port-forward --namespace {{ .Release.Namespace }} $POD_NAME {{ .Values.port }}:{{ .Values.port }}
+    $ kubectl port-forward --namespace {{ .Release.Namespace }} svc/{{ template "solr.service-name" . }} {{ .Values.port }}:{{ .Values.port }}
+
+and accessing it from a browser at:
+
+    http://localhost:{{ .Values.port }}
+{{ if .Values.ingress.enabled }}
+Alternatively, we see that you have enabled ingress.
+
+-------------------------------------------------------------------------------
+ WARNING
+
+    By setting "ingress.enabled=true" you have most likely exposed Solr
+    externally without any authentication plugins.
+
+    For security reasons, we strongly suggest that you enable authentiation
+    by reading the README.md.
+
+-------------------------------------------------------------------------------
+
+You may simply access Solr from a browser at:
+{{ if .Values.ingress.tls }}
+    https://{{ .Values.ingress.hostname }}
+{{- else }}
+    http://{{ .Values.ingress.hostname }}
+{{- end }}
+{{ end }}
+That's the end of the notes.
