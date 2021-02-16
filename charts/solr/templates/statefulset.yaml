@@ -20,13 +20,13 @@ spec:
         {{- include "common.labels.standard" $ | nindent 8 }}
         app.kubernetes.io/component: "server"
       annotations:
-        {{- toYaml .Values.podAnnotations | indent 8 }}
+        {{- toYaml .Values.podAnnotations | nindent 8 }}
     spec:
       {{- if .Values.schedulerName }}
       schedulerName: "{{ .Values.schedulerName }}"
       {{- end }}
       affinity:
-        {{- tpl (toYaml .Values.affinity) . | indent 8 }}
+        {{- tpl (toYaml .Values.affinity) . | nindent 8 }}
       {{- if $.Values.securityContext.enabled }}
       tolerations:
         {{- include "common.tplvalues.render" (dict "value" $.Values.tolerations "context" $) | nindent 8 }}
