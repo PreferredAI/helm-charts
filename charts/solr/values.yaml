@@ -134,7 +134,7 @@ podAnnotations: {}
 ##
 volumeClaimTemplates:
   ## solr data Persistent Volume Storage Class
-  storageClassName: ""
+  storageClassName: "efs-sc"
   accessModes:
     - "ReadWriteOnce"
   ## PersistentVolumeClaim size
