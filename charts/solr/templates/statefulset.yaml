@@ -225,7 +225,7 @@ spec:
         {{- end }}
   volumeClaimTemplates:
     - metadata:
-        name: {{ include "solr.pvc-name" . }}
+        name: efs-claim
         annotations:
           pv.beta.kubernetes.io/gid: "8983"
       spec:
