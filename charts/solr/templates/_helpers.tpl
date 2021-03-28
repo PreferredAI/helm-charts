@@ -70,7 +70,7 @@ Create chart name and version as used by the chart label.
   Define the name of the solr PVC
 */}}
 {{- define "solr.pvc-name" -}}
-{{ printf "%s-%s" (include "solr.fullname" .) "pvc" | trunc 63 | trimSuffix "-"  }}
+{{ printf "efs-claim"  }}
 {{- end -}}
 
 {{/*
