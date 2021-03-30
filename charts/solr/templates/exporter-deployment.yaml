@@ -52,7 +52,7 @@ spec:
 {{ tpl (toYaml .Values.affinity) .  | indent 8 }}
       containers:
         - name: exporter
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          image: {{ include "solr.image" $ }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           resources:
 {{ toYaml .Values.exporter.resources | indent 12 }}
