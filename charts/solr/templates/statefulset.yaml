@@ -22,6 +22,9 @@ spec:
       annotations:
         {{- toYaml .Values.podAnnotations | nindent 8 }}
     spec:
+      {{- if .Values.nodeSelector }}
+      nodeSelector: {{- .Values.nodeSelector | toYaml | nindent 8 }}
+      {{- end }}
       {{- if .Values.schedulerName }}
       schedulerName: "{{ .Values.schedulerName }}"
       {{- end }}
