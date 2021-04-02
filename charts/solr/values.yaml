@@ -129,6 +129,7 @@ podAnnotations: {}
 ## ref: https://kubernetes.io/docs/tasks/administer-cluster/configure-multiple-schedulers/
 ##
 # schedulerName:
+
 ## Enable persistence using Persistent Volume Claims
 ## ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
 ##
@@ -140,6 +141,12 @@ volumeClaimTemplates:
   ## PersistentVolumeClaim size
   ##
   storageSize: 20Gi
+
+## Use an existing PersistentVolumeClaim
+## For example: Share a volume between the pods using EFS CSI driver
+## ref: https://github.com/kubernetes-sigs/aws-efs-csi-driver
+##
+existingVolumeClaim: ""
 
 ## Pod Security Context
 ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
