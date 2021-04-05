@@ -112,6 +112,7 @@ The following table shows the configuration options for the Solr helm chart:
 | `volumeClaimTemplates.storageClassName`       | The name of the storage class for the Solr PVC | `""` |
 | `volumeClaimTemplates.storageSize`            | The size of the PVC | `20Gi` |
 | `volumeClaimTemplates.accessModes`            | The access mode of the PVC| `["ReadWriteOnce"]` |
+| `existingVolumeClaim`                         | Use an existing PersistentVolumeClaim instead of the `volumeClaimTemplates` spec of the StatefulSet | `""` |
 | `tls.enabled`                                 | Whether to enable TLS, requires `tls.certSecret.name` to be set to a secret containing cert details, see README for details | `false` |
 | `tls.wantClientAuth`                          | Whether Solr wants client authentication | `false` |
 | `tls.needClientAuth`                          | Whether Solr requires client authentication | `false` |
